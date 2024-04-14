@@ -26,4 +26,4 @@ const defaultPlayerState = {
     }
 }
 
-export const playerDataState = atom(defaultPlayerState)
+export const playerDataState = atom({})
