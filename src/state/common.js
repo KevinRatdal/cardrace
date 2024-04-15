@@ -11,7 +11,8 @@ import {atom} from 'jotai'
 export const appState = atom(0)
 
 
-const defaultPlayerState = {
+// eslint-disable-next-line no-unused-vars
+const _defaultPlayerState = {
     "3b97f64568c": {
         "id": "3b97f64568c",
         "name": "kev",
