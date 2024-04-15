@@ -8,6 +8,7 @@ import Hearts from './components/Hearts'
 import Clubs from './components/Clubs'
 import Diamonds from './components/Diamonds'
 import Spades from './components/Spades'
+import SuitIcon from "./components/SuitIcon"
 
 const Setup = () => {
   const [, setAppState] = useAtom(appState)
@@ -86,10 +87,11 @@ const PlayerInput = ({ player }) => {
           onChange={handleChange('suit')}
           size="small"
         >
-          <MenuItem value={'hearts'} color="red"><Hearts width='1em' />&nbsp;Hearts</MenuItem>
-          <MenuItem value={'diamonds'}><Diamonds width='1em' />&nbsp;Diamonds</MenuItem>
-          <MenuItem value={'clubs'}><Clubs width='1em' />&nbsp;Clubs</MenuItem>
-          <MenuItem value={'spades'}><Spades width='1em' />&nbsp;Spades</MenuItem>
+          {['hearts', 'diamonds', 'clubs', 'spades'].map((suit) => (
+          <MenuItem key={suit} value={suit}>
+            <SuitIcon suit={suit} width='1em' />&nbsp;<span style={{textTransform: 'capitalize'}}>{suit}</span>
+            </MenuItem>
+          ) )}
         </Select>
       </FormControl>
       <Button variant="outlined" size="small" onClick={delPlayer}>x</Button>

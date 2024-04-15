@@ -4,18 +4,20 @@ export class Horsegame {
   constructor() {
     this.CONFIG = {
       WIN: 8,
-      PENALTY: -1
+      PENALTY: 'all'
+      // PENALTY: -1
     }
     this.round = 0
     this.lanes = [
       { card: { suit: 'hearts', variant: 'A' }, pos: 0 },
       { card: { suit: 'spades', variant: 'A' }, pos: 0 },
+      { card: { suit: 'diamonds', variant: 'A' }, pos: 0 },
       { card: { suit: 'clubs', variant: 'A' }, pos: 0 },
-      { card: { suit: 'diamonds', variant: 'A' }, pos: 0 }
     ]
     this.cardStack = new PartialDeckOfCards()
     this.penalties = this.initPenalties()
     this.flippedCard = null
+    this.prevFlippedCard = null
     this.blocking = false
     this.winningCard = null
 
@@ -28,6 +30,7 @@ export class Horsegame {
   }
 
   flipCard() {
+    this.prevFlippedCard = this.flippedCard
     this.flippedCard = this.cardStack.getCard()
   }
 
@@ -115,6 +118,9 @@ export class PartialDeckOfCards {
   }
   getCard() {
     return this.cards.pop()
+  }
+  peekCard() {
+    return this.cards.at(-1)
   }
   getCards(n = 1) {
     let returnCards = []
