@@ -4,10 +4,6 @@ import { appState, playerDataState } from "../state/common"
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
 import { uid } from "uid"
 import styles from './setup.module.css'
-import Hearts from './components/Hearts'
-import Clubs from './components/Clubs'
-import Diamonds from './components/Diamonds'
-import Spades from './components/Spades'
 import SuitIcon from "./components/SuitIcon"
 
 const Setup = () => {

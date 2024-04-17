@@ -39,7 +39,7 @@ const Game = () => {
       <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center', gap: '1em' }}>
         {gameRef.current.winningCard && <Box>{gameRef.current.winningCard.suit} has won</Box>}
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1em' }}>
-          <Button onClick={handleTick} variant="contained" disabled={gameRef.current.blocking} fullWidth>Flip card</Button>
+          <Button onClick={handleTick} variant="contained" disabled={gameRef.current.blocking === 'win'} fullWidth>Flip card</Button>
           <CardFlipContainer card={gameRef.current.flippedCard} nextCard={gameRef.current.cardStack.peekCard()} />
         </Box>
         <Typography>Cards remaining: {gameRef.current.cardStack.getCardsLeft()}</Typography>
@@ -133,10 +133,9 @@ const Penalties = ({ penalties, height, tick }) => {
     <Box>
       <Box
         sx={{
-          // border: '1px solid red',
-          position: 'relative',
-          height: `${90 * height - 10}px`,
-          width: 50,
+          display: 'grid',
+          gap: '10px',
+          gridTemplate: `repeat(${height}, 1fr) / auto`,
           borderRadius: '8px',
           boxShadow: '0px 0px 8px #ddd2'
         }}
@@ -147,11 +146,7 @@ const Penalties = ({ penalties, height, tick }) => {
               key={penalty.pos}
               className='card'
               sx={{
-                position: 'absolute',
-                borderRadius: '8px',
-                bottom: `${90 * penalty.pos}px`,
-                height: '80px',
-                width: '50px',
+                gridRowStart: `${height - penalty.pos}`,
                 transition: 'all 0.1s linear',
                 transitionDelay: '0.5s'
               }}
@@ -182,7 +177,8 @@ const Card = ({ variant, suit, flipped = true, applied = false, onClick = undefi
         background: internalFlip ? '#fff' : 'linear-gradient(45deg, #e66465, #9198e5)',
         borderRadius: '8px',
         height: '80px',
-        width: '50px',
+        aspectRatio: '5/8',
+        // width: '50px',
         transform: `rotate3d(0, 1, 0, ${!flipped ? '-180deg' : '0deg'})`,
         transition: 'transform 0.5s ease-in-out, left 0.5s',
         display: 'flex',

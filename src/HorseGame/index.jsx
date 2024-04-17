@@ -1,13 +1,15 @@
 import { useAtom } from "jotai/react"
 import { appState } from "../state/common"
 import Setup from "./Setup"
+import Summary from "./Summary"
 import Game from './Game'
 import { Box, Button, Typography } from "@mui/material"
 
 
 const views = {
   0: { component: <Setup /> },
-  1: { component: <Game /> }
+  1: { component: <Game /> },
+  2: { component: <Summary/>}
 }
 
 const HorseGame = () => {

@@ -1,4 +1,5 @@
 import {atom} from 'jotai'
+import { atomWithStorage } from 'jotai/utils'
 
 
 /**
@@ -8,7 +9,7 @@ import {atom} from 'jotai'
  *  - 3 => finish phase
  * @returns {import('jotai').PrimitiveAtom<number>}
  */
-export const appState = atom(0)
+export const appState = atom(2)
 
 
 // eslint-disable-next-line no-unused-vars
@@ -27,4 +28,6 @@ const _defaultPlayerState = {
     }
 }
 
-export const playerDataState = atom({})
+export const playerDataState = atomWithStorage('cardGameplayers', {})
+
+export const gameStats = atom(null)
