@@ -1,13 +1,17 @@
 /* eslint-disable react/prop-types */
 import { useAtom } from "jotai"
 import { appState, playerDataState } from "../state/common"
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
+import { Box, Button, TextField, Typography } from "@mui/material"
 import { uid } from "uid"
 import styles from './setup.module.css'
 import SuitIcon from "./components/SuitIcon"
+import { gameStats } from "../state/common"
+import { useAtomValue } from "jotai/react"
 
-const Setup = () => {
+const Summary = () => {
     const [, setAppState] = useAtom(appState)
+    const gameStatsValue = useAtomValue(gameStats)
+    console.log(gameStatsValue)
     const [playerData, setPlayerData] = useAtom(playerDataState)
 
     const addPlayer = () => {
@@ -33,7 +37,7 @@ const Setup = () => {
                 })}
                 <Button onClick={addPlayer}>Add Player</Button>
             </Box>
-            <Button variant="contained" onClick={handleSave}>Start</Button>
+            <Button variant="contained" onClick={handleSave}>New Round</Button>
         </Box>
     )
 }
@@ -74,4 +78,4 @@ const PlayerData = ({ player }) => {
 }
 
 
-export default Setup
+export default Summary

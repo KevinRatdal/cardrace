@@ -5,8 +5,13 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typo
 import { uid } from "uid"
 import styles from './setup.module.css'
 import SuitIcon from "./components/SuitIcon"
+import { gameStats} from "../state/common"
+import { useAtomValue } from "jotai/react"
+
 
 const Setup = () => {
+  const gameStatsValue = useAtomValue(gameStats)
+  console.log(gameStatsValue)
   const [, setAppState] = useAtom(appState)
   const [playerData, setPlayerData] = useAtom(playerDataState)
 

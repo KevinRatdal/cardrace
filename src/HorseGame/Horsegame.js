@@ -25,7 +25,7 @@ export class Horsegame {
 
   initPenalties() {
     return [...new Array(this.CONFIG.WIN - 2)].map((_v, i) => {
-      return { card: this.cardStack.getCard(), pos: i + 1, flipped: false, applied: false}
+      return { card: this.cardStack.getCard(), pos: i + 1, flipped: false, applied: false }
     })
   }
 
@@ -34,7 +34,7 @@ export class Horsegame {
     this.flippedCard = this.cardStack.getCard()
   }
 
-  moveCard(suit, penalty=false) {
+  moveCard(suit, penalty = false) {
     const suitIdx = this.lanes.findIndex(lane => lane.card.suit === suit)
     if (suitIdx < 0) {
       console.error('Invalid suit', suit)
@@ -95,7 +95,17 @@ export class Horsegame {
     return uid()
   }
 
-
+  getResults() {
+    return {
+      cardStack: this.cardStack,
+      penalties: this.penalties,
+      lastFlippedCard: this.flippedCard,
+      winningCard: this.winningCard,
+      lanes: this.lanes,
+      round: this.round,
+      config: this.CONFIG
+    }
+  }
 }
 
 export class PartialDeckOfCards {

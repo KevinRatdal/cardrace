@@ -1,16 +1,18 @@
 /* eslint-disable react/prop-types */
-// import { useAtom } from "jotai"
-// import { playerDataState } from "../state/common"
 import { Box, Button, Typography } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
 import { Horsegame } from "./Horsegame"
 import { uid } from "uid"
 import SuitIcon from "./components/SuitIcon"
+import { useSetAtom, useAtomValue } from "jotai/react"
+import { gameStats, playerDataState, appState } from "../state/common"
 
 
 
 const Game = () => {
-  // const [playerData] = useAtom(playerDataState)
+  const playerData = useAtomValue(playerDataState)
+  const setAppState = useSetAtom(appState)
+  const setGameStats = useSetAtom(gameStats)
   const gameRef = useRef(null)
   const [, setTickId] = useState(null)
 
@@ -23,6 +25,11 @@ const Game = () => {
   const handleTick = () => {
     let newTickId = gameRef.current.tick()
     setTickId(newTickId)
+  }
+
+  const handleSummary = () => {
+    setGameStats(prev => ([...prev, {players: playerData, gameResults: gameRef.current.getResults()}]))
+    setAppState(2)
   }
 
   if (!gameRef.current) { return <div>uninitialized</div> }
@@ -39,6 +46,7 @@ const Game = () => {
       <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center', gap: '1em' }}>
         {gameRef.current.winningCard && <Box>{gameRef.current.winningCard.suit} has won</Box>}
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1em' }}>
+          <Button onClick={handleSummary} variant="contained" sx={{ visibility: gameRef.current.blocking === 'win'  ? 'show' : "hidden"}} fullWidth>Summary</Button>
           <Button onClick={handleTick} variant="contained" disabled={gameRef.current.blocking === 'win'} fullWidth>Flip card</Button>
           <CardFlipContainer card={gameRef.current.flippedCard} nextCard={gameRef.current.cardStack.peekCard()} />
         </Box>
