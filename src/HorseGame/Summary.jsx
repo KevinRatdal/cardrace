@@ -1,80 +1,91 @@
 /* eslint-disable react/prop-types */
 import { useAtom } from "jotai"
-import { appState, playerDataState } from "../state/common"
-import { Box, Button, TextField, Typography } from "@mui/material"
-import { uid } from "uid"
-import styles from './setup.module.css'
+import { appState } from "../state/common"
+import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+// import { uid } from "uid"
+// import styles from './setup.module.css'
 import SuitIcon from "./components/SuitIcon"
 import { gameStats } from "../state/common"
 import { useAtomValue } from "jotai/react"
+import TrophyIcon from '@mui/icons-material/EmojiEvents';
+
+const columns = [
+  {
+    id: 'placement',
+    label: '#'
+  },
+  {
+    id: 'name',
+    label: 'Name'
+  },
+  {
+    id: 'wager',
+    label: 'Wager'
+  },
+  {
+    id: 'suit',
+    label: 'Suit'
+  },
+]
 
 const Summary = () => {
-    const [, setAppState] = useAtom(appState)
-    const gameStatsValue = useAtomValue(gameStats)
-    console.log(gameStatsValue)
-    const [playerData, setPlayerData] = useAtom(playerDataState)
+  const [, setAppState] = useAtom(appState)
+  const gameStatsValue = useAtomValue(gameStats)
+  console.log(gameStatsValue)
 
-    const addPlayer = () => {
-        const newUser = {
-            id: uid(),
-            name: '',
-            suit: '',
-            wager: 0
-        }
-        setPlayerData(prev => ({ ...prev, [newUser.id]: newUser }))
-    }
+ 
 
-    const handleSave = () => {
-        setAppState(1)
-    }
+  const handleSave = () => {
+    setAppState(0)
+  }
 
-    return (
-        <Box>
-            <Typography variant="h2">Summary</Typography>
-            <Box className={styles.playerList}>
-                {Object.keys(playerData).map(playerId => {
-                    return <PlayerData key={playerId} player={playerData[playerId]} />
-                })}
-                <Button onClick={addPlayer}>Add Player</Button>
-            </Box>
-            <Button variant="contained" onClick={handleSave}>New Round</Button>
-        </Box>
-    )
+  return (
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '1em',
+      width: '600px'
+    }}>
+      <Typography variant="h2">Summary</Typography>
+      <TableContainer>
+        <Table>
+          <TableHead>
+              {columns.map(col => {
+                return <TableCell key={col.id}>{col.label}</TableCell>
+              })}
+          </TableHead>
+          <TableBody>
+
+            {Object.keys(gameStatsValue.at(-1)?.players).map(playerId => {
+              return <PlayerData key={playerId} player={gameStatsValue.at(-1)?.players[playerId]} />
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Button variant="contained" onClick={handleSave}>New Round</Button>
+    </Box>
+  )
 }
 
 
 const PlayerData = ({ player }) => {
-    const [, setPlayerData] = useAtom(playerDataState)
-    // console.log(playerData)
-    // const updateUser = (playerId) => (data) => {
-    //   setPlayerData(prev => {
-
-    //   })
-    // }
-    const handleChange = (fieldType) => (e) => {
-        setPlayerData(prev => (
-            {
-                ...prev,
-                [player.id]: {
-                    ...prev[player.id],
-                    [fieldType]: e.target.value
-                }
-            }
-        ))
-    }
-
-
-    return (
-        <Box sx={{
-            display: 'flex',
-            gap: '0.5em'
-        }}>
-            <Typography>{player.name}</Typography>
-            <TextField size="small" onChange={handleChange('wager')} type="number" value={player.wager} label='Wager'></TextField>
-
-            <SuitIcon suit={player.suit} width='1em' />&nbsp;<span style={{ textTransform: 'capitalize' }}>{player.suit}</span>
-        </Box>
-    )
+  return (
+    <TableRow>
+      <TableCell>
+        <TrophyIcon></TrophyIcon><Typography>{1}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{player.name}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{player.wager}</Typography>
+      </TableCell>
+      <TableCell>
+        <SuitIcon suit={player.suit} width='1em' />&nbsp;<span style={{ textTransform: 'capitalize' }}>{player.suit}</span>
+      </TableCell>
+    </TableRow>
+  )
 }
 
 

@@ -14,6 +14,7 @@ const Game = () => {
   const setAppState = useSetAtom(appState)
   const setGameStats = useSetAtom(gameStats)
   const gameRef = useRef(null)
+  const autoPlayRef = useRef(null)
   const [, setTickId] = useState(null)
 
   useEffect(() => {
@@ -32,6 +33,21 @@ const Game = () => {
     setAppState(2)
   }
 
+  const toggleAutoPlay = () => {
+    if (autoPlayRef.current) {
+      clearInterval(autoPlayRef.current)
+      autoPlayRef.current = null
+    } else {
+      autoPlayRef.current = setInterval(()=> {
+        handleTick()
+        if (gameRef.current.blocking === 'win') {
+          clearInterval(autoPlayRef.current)
+          autoPlayRef.current = null
+        }
+      }, 1000)
+    }
+  }
+
   if (!gameRef.current) { return <div>uninitialized</div> }
 
 
@@ -44,8 +60,9 @@ const Game = () => {
         <Penalties penalties={gameRef.current.penalties} height={gameRef.current.CONFIG.WIN} tick={handleTick} />
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center', gap: '1em' }}>
-        {gameRef.current.winningCard && <Box>{gameRef.current.winningCard.suit} has won</Box>}
+        {<Box sx={{visibility: gameRef.current.winningCard ? 'show': 'hidden'}} >{gameRef.current.winningCard ? `${gameRef.current.winningCard.suit} has won` : 'placeholder'} </Box>}
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1em' }}>
+          <Button onClick={toggleAutoPlay}  variant="contained" >{!autoPlayRef.current ?'start' :'stop'} auto</Button>
           <Button onClick={handleSummary} variant="contained" sx={{ visibility: gameRef.current.blocking === 'win'  ? 'show' : "hidden"}} fullWidth>Summary</Button>
           <Button onClick={handleTick} variant="contained" disabled={gameRef.current.blocking === 'win'} fullWidth>Flip card</Button>
           <CardFlipContainer card={gameRef.current.flippedCard} nextCard={gameRef.current.cardStack.peekCard()} />
