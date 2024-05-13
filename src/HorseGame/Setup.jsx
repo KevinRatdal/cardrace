@@ -29,7 +29,7 @@ const Setup = () => {
 
   return (
     <Box>
-      <Typography variant="h2">Setup</Typography>
+      <Typography variant="h2" sx={{margin: '1em'}}>Setup</Typography>
       <Box className={styles.playerList}>
         {Object.keys(playerData).map(playerId => {
           return <PlayerInput key={playerId} player={playerData[playerId]} />
