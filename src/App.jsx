@@ -14,6 +14,7 @@ const darkTheme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={darkTheme}>
+      <Logo />
       <CssBaseline />
       <HorseGame />
     </ThemeProvider>
@@ -21,3 +22,9 @@ function App() {
 }
 
 export default App
+
+function Logo() {
+  return (
+    <a style={{position: 'absolute', top: '34px', left: '32px'}} href='/' ><img style={{height: '32px'}}  src='./rsl.png' /></a>
+  )
+}
