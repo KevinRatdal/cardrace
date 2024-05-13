@@ -5,11 +5,12 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typo
 import { uid } from "uid"
 import styles from './setup.module.css'
 import SuitIcon from "./components/SuitIcon"
+import { useSetAtom } from "jotai/react"
 
 
 const Setup = () => {
 
-  const [, setAppState] = useAtom(appState)
+  const setAppState = useSetAtom(appState)
   const [playerData, setPlayerData] = useAtom(playerDataState)
 
   const addPlayer = () => {

@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
-import { useAtom } from "jotai"
 import { appState } from "../state/common"
 import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 // import { uid } from "uid"
 // import styles from './setup.module.css'
 import SuitIcon from "./components/SuitIcon"
 import { gameStats } from "../state/common"
-import { useAtomValue } from "jotai/react"
-import TrophyIcon from '@mui/icons-material/EmojiEvents';
+import { useAtomValue, useSetAtom } from "jotai/react"
+import PlacementIcon from "./components/PlacementIcon"
+import { useEffect, useState } from "react"
 
 const columns = [
   {
@@ -29,11 +29,22 @@ const columns = [
 ]
 
 const Summary = () => {
-  const [, setAppState] = useAtom(appState)
+  const setAppState = useSetAtom(appState)
   const gameStatsValue = useAtomValue(gameStats)
+  const [gameResults, setGameResults] = useState(null)
+
+  useEffect(() => {
+    setGameResults(gameStatsValue.at(-1))
+  }, [gameStatsValue])
   console.log(gameStatsValue)
 
- 
+  const getPlacement = (player, gameRes) => {
+    const wc = gameRes.gameResults.winningCard
+    if (player.suit === wc.suit) {
+      return 1
+    } 
+    return ''
+  }
 
   const handleSave = () => {
     setAppState(0)
@@ -51,14 +62,16 @@ const Summary = () => {
       <TableContainer>
         <Table>
           <TableHead>
+            <TableRow>
               {columns.map(col => {
                 return <TableCell key={col.id}>{col.label}</TableCell>
               })}
+            </TableRow>
           </TableHead>
           <TableBody>
 
-            {Object.keys(gameStatsValue.at(-1)?.players).map(playerId => {
-              return <PlayerData key={playerId} player={gameStatsValue.at(-1)?.players[playerId]} />
+            {Object.keys(gameResults?.players ?? []).map((playerId, index) => {
+              return <PlayerData key={playerId} player={gameResults?.players[playerId]} placement={getPlacement(gameResults?.players[playerId], gameResults)} index={index} />
             })}
           </TableBody>
         </Table>
@@ -69,11 +82,11 @@ const Summary = () => {
 }
 
 
-const PlayerData = ({ player }) => {
+const PlayerData = ({ player, placement }) => {
   return (
     <TableRow>
       <TableCell>
-        <TrophyIcon></TrophyIcon><Typography>{1}</Typography>
+        <PlacementIcon placement={placement} />
       </TableCell>
       <TableCell>
         <Typography>{player.name}</Typography>
