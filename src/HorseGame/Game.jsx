@@ -37,6 +37,7 @@ const Game = () => {
     if (autoPlayRef.current) {
       clearInterval(autoPlayRef.current)
       autoPlayRef.current = null
+      setTickId(uid())
     } else {
       autoPlayRef.current = setInterval(()=> {
         handleTick()
@@ -45,6 +46,7 @@ const Game = () => {
           autoPlayRef.current = null
         }
       }, 1000)
+      setTickId(uid())
     }
   }
 
